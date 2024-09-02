@@ -12,4 +12,5 @@ class Quiz {
     // 5. checkAnswer(answer)
 
     // 6. hasEnded()
-}
+    
+} 
