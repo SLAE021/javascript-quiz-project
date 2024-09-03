@@ -38,8 +38,25 @@ class Quiz {
   hasEnded() {
     if (this.currentQuestionIndex < this.questions.length) {
       return false;
-    } else if ((this.currentQuestionIndex = this.questions.length)) {
+    } else if (this.currentQuestionIndex === this.questions.length) {
       return true;
     }
+  }
+
+  filterQuestionsByDifficulty(difficulty) {
+    if (difficulty >= 1 && difficulty <= 3) {
+      this.questions = this.questions.filter((questions) => {
+        return questions.difficulty === difficulty;
+      });
+    }
+    return this.questions;
+  }
+
+  averageDifficulty() {
+    const totalDifficulty = this.questions.reduce((acc, eachQuestion) => {
+      return acc + eachQuestion.difficulty;
+    }, 0);
+
+    return totalDifficulty / this.questions.length;
   }
 }
