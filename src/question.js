@@ -16,3 +16,4 @@ class Question {
     return array;
   }
 }
+// console.log(question.text)
