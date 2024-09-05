@@ -46,6 +46,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Shuffle the quiz questions
   quiz.shuffleQuestions();
 
+  // console.log(quiz.questions) !!!!!!!!!!!
+
 
   /************  SHOW INITIAL CONTENT  ************/
 
@@ -63,7 +65,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /************  TIMER  ************/
 
-  let timer;
+  // console.log(quiz.timeRemaining)
+  let timer = setInterval(() => {
+    
+    quiz.timeRemaining--
+
+    const minutes = Math.floor(quiz.timeRemaining / 60).toString().padStart(2, "0");
+    const seconds = (quiz.timeRemaining % 60).toString().padStart(2, "0");
+
+    timeRemainingContainer.innerText = `${minutes}:${seconds}`;
+    // console.log(quiz.timeRemaining)
+
+    if (quiz.timeRemaining <= 0) {
+      clearInterval(timer)
+      alert("time is out, try again!") // test alert message
+    }
+
+  }, 1000)
+
+  console.log(quiz.timeRemaining)
+   
 
 
   /************  EVENT LISTENERS  ************/
@@ -87,12 +108,16 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    
+
     // Clear the previous question text and question choices
     questionContainer.innerText = "";
     choiceContainer.innerHTML = "";
 
     // Get the current question from the quiz by calling the Quiz class method `getQuestion()`
     const question = quiz.getQuestion();
+    // console.log(question.answer) !!!!!!!!!!!!!!!
+    // console.log(question) // this is the question user read on screen
     // Shuffle the choices of the current question by calling the method 'shuffleChoices()' on the question object
     question.shuffleChoices();
     
@@ -102,21 +127,29 @@ document.addEventListener("DOMContentLoaded", () => {
     //
     // 1. Show the question
     // Update the inner text of the question container element and show the question text
-    console.log(question.text)
-    console.log(questionContainer)
+    // console.log(question.text)
+    // console.log(questionContainer)
 
     questionContainer.innerText = question.text
     
     // 2. Update the green progress bar
     // Update the green progress bar (div#progressBar) width so that it shows the percentage of questions answered
 
+
+    /* IMPORTANT CONSOLE LOGS
+
+        console.log(quiz)
+        console.log(question)
+
+    ========================= */
+
     // console.log(questions.indexOf(quiz.currentQuestionIndex)
-    console.log(questions.indexOf(question))
-    console.log(questions.length)
+    // console.log(questions.indexOf(question))
+    // console.log(questions.length)
 
     // status bar percentage = (index of current question + 1 / questions length) * 100
-    let percentage = (questions.indexOf(question) + 1) / (questions.length) * 100
-    console.log(percentage)
+    let percentage = (quiz.currentQuestionIndex) / (questions.length) * 100
+    // console.log(percentage)
 
     progressBar.style.width = `${percentage}%`; // This value is hardcoded as a placeholder
 
@@ -124,7 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 3. Update the question count text 
     // Update the question count (div#questionCount) show the current question out of total questions
     
-    questionCount.innerText = `Question 1 of ${questions.length}`; //  This value is hardcoded as a placeholder
+    questionCount.innerText = `Question ${quiz.currentQuestionIndex + 1} of ${questions.length}`; //  This value is hardcoded as a placeholder
 
     
     // 4. Create and display new radio input element with a label for each choice.
@@ -141,16 +174,11 @@ document.addEventListener("DOMContentLoaded", () => {
       // Hint 3: You can use the `element.appendChild()` method to append an element to the choices container.
       // Hint 4: You can use the `element.innerText` property to set the inner text of an element.
 
-      console.log(choiceContainer) // choiceContainer = <ul>
-      console.log(question.choices)
-
-      
-
-
-
+      // console.log(choiceContainer) // choiceContainer = <ul>
+      // console.log(question.choices)
 
       question.choices.forEach((eachChoice) => {
-        console.log(eachChoice);
+        // console.log(eachChoice);
 
         const newRadioInputElement = document.createElement("input")
         newRadioInputElement.type = "radio";
@@ -159,30 +187,85 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const label = document.createElement("label")
         label.innerText = eachChoice
-        console.log(label)
+        // console.log(label)
 
         const br = document.createElement ("br")
 
         choiceContainer.append(newRadioInputElement)
         choiceContainer.append(label)
         choiceContainer.append(br)
-        console.log(choiceContainer) 
+        // console.log(choiceContainer) 
         
         newRadioInputElement.innerText = eachChoice.value
-        console.log(newRadioInputElement.innerText)
-
+        // console.log(newRadioInputElement.innerText)
       });
 
-      
+      // console.log(question.answer) 
+      // return question.answer // creates variable to use outside the function
+  
+    }
 
-      
-  }
+  // let correctAnswer = showQuestion() // showed question's correct answer
+  // console.log(correctAnswer) 
 
+
+  // console.log(questions[0].answer) // !!!!!!!!!!!!!!!!!
 
   
   function nextButtonHandler () {
-    let selectedAnswer; // A variable to store the selected answer value
+    let selectedAnswer; // A variable to store the selected answer value == user input
+    // console.log(selectedAnswer)
 
+    const allChoicesInputList = document.querySelectorAll("input")
+    // console.log(allChoicesInputList)
+    // console.log(allChoicesInputList[0].checked)
+    // console.log(allChoicesInputList[1].checked)
+    // console.log(allChoicesInputList[2].checked)
+    // console.log(allChoicesInputList[3].checked)
+    // checkAnswer()
+    //onst question = quiz.getQuestion();
+
+    allChoicesInputList.forEach((input) => {
+      if (input.checked) {
+        selectedAnswer = input.value;
+        // console.log(input.value)
+        // console.log(selectedAnswer)
+        // console.log(showQuestion(question.answer))
+        //console.log(selectedAnswer === correctAnswer)
+      }
+    })
+
+    //if (selectedAnswer === question.answer) {
+     quiz.checkAnswer(selectedAnswer)
+     //}
+
+    quiz.moveToNextQuestion()
+
+    showQuestion()
+  } 
+    
+
+    // we have to check selected answer with the correct answer to the question showed in showQuestion()
+    // if (selectedAnswer === questions.answer)
+
+
+
+    /*
+
+    function nextButtonHandler() {
+  // recopilar la respuesta del usuario -- HECHO, l.185
+  // revisar cada uno de los input, verificar cual está checked -- DONE, L 193
+  // verificar esa respuesta contra la respuesta correcta de la pregunta actual
+  // pasar a la siguiente pregunta
+  // volver a ejecutar la funcion showQuestion
+
+  ----
+    checkAnswer(answer) {
+    if (this.getQuestion().answer === answer) {
+      this.correctAnswers += 1; // this.correctAnswers = this.correctAnswers + 1
+    }
+  }
+    */
 
 
     // YOUR CODE HERE:
@@ -200,9 +283,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Check if selected answer is correct by calling the quiz method `checkAnswer()` with the selected answer.
       // Move to the next question by calling the quiz method `moveToNextQuestion()`.
       // Show the next question by calling the function `showQuestion()`.
-  }  
-
-
+   
 
 
   function showResults() {
@@ -216,7 +297,22 @@ document.addEventListener("DOMContentLoaded", () => {
     endView.style.display = "flex";
     
     // 3. Update the result container (div#result) inner text to show the number of correct answers out of total questions
-    resultContainer.innerText = `You scored 1 out of 1 correct answers!`; // This value is hardcoded as a placeholder
+    resultContainer.innerText = `You scored ${quiz.correctAnswers} out of ${questions.length} correct answers!`; // This value is hardcoded as a placeholder
   }
+
+  
+  const restartButton = document.querySelector("#restartButton")
+
+  restartButton.addEventListener("click", () => {
+
+    quizView.style.display = "block";
+    endView.style.display = "none";
+    quiz.currentQuestionIndex = 0;
+    quiz.correctAnswers = 0;
+    quiz.shuffleQuestions()
+    showQuestion()
+    quiz.timeRemaining = quizDuration
+
+  })
   
 });

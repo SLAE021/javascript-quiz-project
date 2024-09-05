@@ -16,6 +16,7 @@ class Quiz {
   moveToNextQuestion() {
     this.currentQuestionIndex++;
   }
+  
   shuffleQuestions() {
     let array = this.questions;
     for (let i = 0; i < array.length; i++) {
