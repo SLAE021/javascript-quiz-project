@@ -24,17 +24,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Array with the quiz questions
   const questions = [
-    new Question("¿Cual de estos es un Digimon Mitologico?", ["Bagramon", "Merukimon", "Tactimon", "Blastimon"], "Merukimon", 3),
+    new Question("¿Cuál de estos es un Digimon Mitológico?", ["Bagramon", "Merukimon", "Tactimon", "Blastimon"], "Merukimon", 3),
 
     new Question("Nombre de las dagas de JinWoo", ["Dagas del Rey Demonio", "Dagas infernales", "Colmillos de rey serpiente", "Dagas de Kamish"], "Dagas de Kamish", 3),
         
-    new Question("¿cual de los siguientes es un pokemon tipo Ada", ["Bagramon", "Adamon", "Togepi", "Pikachu"], "Togepi", 3),
+    new Question("¿Cuál de los siguientes es un Pokemon tipo Ada?", ["Bagramon", "Adamon", "Togepi", "Pikachu"], "Togepi", 3),
     
     new Question("¿En qué año se estrenó el primer capítulo de The Office?", ["2001", "2005", "1999", "2010"], "2005", 3),
     
-    new Question("¿Qué edad tiene Jorge?", ["20", "30", "42", "no lo tengo claro"], "no lo tengo claro", 3),
+    new Question("¿Qué edad tiene Jorge?", ["20", "30", "42", "infinita, como su paciencia"], "infinita, como su paciencia", 3),
     
-  
 
     // Add more questions herea
   ];
